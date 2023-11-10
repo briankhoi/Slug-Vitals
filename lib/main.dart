@@ -5,7 +5,6 @@ import 'pages/home_page.dart';
 import 'pages/menu_page.dart';
 import 'fetch_data.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
