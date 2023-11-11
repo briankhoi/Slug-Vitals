@@ -32,8 +32,8 @@ class _MyAppState extends State<MyApp> {
             body: TabBarView(
               children: [
                 HomePage(),
-                // AddPage(),
-                MenuPage(),
+                AddPage(),
+                // MenuPage(),
                 HistoryPage(),
               ],
             )),

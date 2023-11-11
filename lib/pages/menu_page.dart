@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatefulWidget {
+  // MenuPage({super.key, required currentHall});
+  MenuPage({Key? key, required this.currentHall}) : super(key: key);
+  final String currentHall;
   @override
   State<MenuPage> createState() => _MenuPageState();
 }
 
 class _MenuPageState extends State<MenuPage> {
+  String currentHall = '';
+
+  @override
+  void initState() {
+    super.initState();
+    currentHall = widget.currentHall;
+    print(currentHall);
+  }
+
   var diningHalls = {
     // keys are dining hall names
     'John R. Lewis & College Nine': [
@@ -16,11 +28,14 @@ class _MenuPageState extends State<MenuPage> {
       ['Apple Pie', 'stat1', 'stat2'],
       ['Harissa Tofu', 'stat1', 'stat2'],
     ],
-    'Kresge': [
-      ['1', '2', '3']
+    'Crown & Merill': [
+      ['1', '2', '3'],
     ],
-    'Porter': [
-      ['1', '2', '3']
+    'Porter & Kresge': [
+      ['1', '2', '3'],
+    ],
+    'Rachel Carson & Oakes': [
+      ['1', '2', '3'],
     ],
   };
 
@@ -29,15 +44,16 @@ class _MenuPageState extends State<MenuPage> {
       false,
     ],
     'Stevenson & Cowell': [false, false, false],
-    'Kresge': [
+    'Crown & Merill': [
       false,
     ],
-    'Porter': [
+    'Porter & Kresge': [
+      false,
+    ],
+    'Rachel Carson & Oakes': [
       false,
     ],
   };
-
-  String currentHall = 'Stevenson & Cowell';
 
   void updateHall(int updateValue) {
     List<String> keys = diningHalls.keys.toList();
@@ -133,7 +149,8 @@ class _MenuPageState extends State<MenuPage> {
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+                  Navigator.pop(context);
                 }),
             title: Text('Menu'),
           ),
@@ -152,7 +169,7 @@ class _MenuPageState extends State<MenuPage> {
             child: FilledButton(
                 // color: Colors.green.shade300,
                 onPressed: submitForm,
-                child: const Text('Filled')),
+                child: const Text('Submit')),
           ),
         ],
       )),
