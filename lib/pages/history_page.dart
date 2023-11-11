@@ -40,6 +40,8 @@ class _HistoryPageState extends State<HistoryPage> {
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
       if (!(listEquals(exportedItems, emptyState))) {
         appData.updateMacroHistory(macros);
+        appData.updateMacrosTotal(macros);
+        appData.updateMacrosIndicator(macros);
         appData.updateExportedItemsHistory(exportedItems);
       }
       // print("build list");

@@ -13,8 +13,44 @@ class AppData {
   List<double> macrosIndicator = List.filled(3, 0.0);
   List<double> thresholds = List.filled(6, 100.0);
 // food info
-  Map<String, List<List<double>>> macrosMap = {};
-  Map<String, List<String>> foodsMap = {};
+  Map<String, List<String>> foodsMap = {
+    // keys are dining hall names
+    'John R. Lewis & College Nine': [
+      'Crispy Bacon',
+      'Hard-boiled Cage Free Egg (1)',
+      'Natural Bridges Tofu Scramble',
+      'Organic Gluten-Free Oatmeal',
+      'Shredded Hashbrowns',
+      'Texas French Toast'
+    ],
+    'Stevenson & Cowell': [
+      'Allergen Free Halal Chicken',
+      'Apple Pie',
+      'food 1',
+    ],
+    'Crown & Merill': [
+      'food1',
+    ],
+    'Porter & Kresge': [
+      'food 1',
+    ],
+    'Rachel Carson & Oakes': [
+      'food 1',
+    ],
+  };
+
+  late Map<String, List<List<double>>> macrosMap = {
+    'John R. Lewis & College Nine': List.filled(
+        foodsMap['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
+    'Stevenson & Cowell':
+        List.filled(foodsMap['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
+    'Crown & Merill':
+        List.filled(foodsMap['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
+    'Porter & Kresge':
+        List.filled(foodsMap['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
+    'Rachel Carson & Oakes':
+        List.filled(foodsMap['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+  };
 }
 
 class AppDataProvider with ChangeNotifier {

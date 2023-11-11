@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                             sections: List.generate(
                               appData.appData.macrosIndicator.length,
                               (index) {
-                                final double value = appData.appData.macrosIndicator[index];
+                                double value = appData.appData.macrosIndicator[index];
                                 return PieChartSectionData(
                                   color: macroColors[index],
                                   value: value * 100,
