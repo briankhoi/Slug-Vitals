@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:nibbles/data/app_data.dart';
 import './home_page.dart';
@@ -75,87 +75,37 @@ class _HistoryPageState extends State<HistoryPage> {
                     appData.appData.macrosHistory[index][2].toString(),
               });
       return MaterialApp(
-          theme: ThemeData(
-            fontFamily: 'Nexa',
+        theme: ThemeData(
+          fontFamily: 'Nexa',
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green.shade300,
+            title: Text("History"),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
           ),
-          home: Column(children: [
-            Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.green.shade300,
-                title: Text("History"),
-                leading: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ),
-              body: SingleChildScrollView(
-                child: ExpansionPanelList.radio(
-                  materialGapSize: 0,
-                  children: _items
-                      .map((e) => ExpansionPanelRadio(
-                          value: e,
-                          headerBuilder:
-                              (BuildContext context, bool isExpanded) =>
-                                  ListTile(
-                                    title: Text(e['title'].toString()),
-                                  ),
-                          body: Container(
-                            child: Text(e['description']),
-                          )))
-                      .toList(),
-                ),
-              ),
+          body: SingleChildScrollView(
+            child: ExpansionPanelList.radio(
+              materialGapSize: 0,
+              children: _items
+                  .map((e) => ExpansionPanelRadio(
+                      value: e,
+                      headerBuilder: (BuildContext context, bool isExpanded) =>
+                          ListTile(
+                            title: Text(e['title'].toString()),
+                          ),
+                      body: Container(
+                        child: Text(e['description']),
+                      )))
+                  .toList(),
             ),
-            DefaultTabController(
-              length: 3,
-              child: Scaffold(
-                  bottomNavigationBar: menu(),
-                  body: TabBarView(
-                    children: [
-                      HomePage(
-                        dailyValues: List.filled(6, 0.0),
-                        macros: List.filled(3, 0.0),
-                      ),
-                      AddPage(
-                        macros: appData.appData.macrosMap,
-                        foodsList: appData.appData.foodsMap,
-                      ),
-                      HistoryPage(
-                        exportedItems: [],
-                        macros: [],
-                      ),
-                    ],
-                  )),
-            )
-          ]));
+          ),
+        ),
+      );
     });
   }
-}
-
-Widget menu() {
-  return Container(
-    color: Colors.green.shade300,
-    child: TabBar(
-      labelColor: Colors.white,
-      unselectedLabelColor: Colors.white70,
-      indicatorSize: TabBarIndicatorSize.tab,
-      indicatorPadding: EdgeInsets.all(5.0),
-      indicatorColor: Colors.green.shade500,
-      tabs: [
-        Tab(
-          text: "Dashboard",
-          icon: Icon(Icons.home),
-        ),
-        Tab(
-          text: "Add",
-          icon: Icon(Icons.add_circle_outline),
-        ),
-        Tab(
-          text: "History",
-          icon: Icon(Icons.history),
-        ),
-      ],
-    ),
-  );
 }

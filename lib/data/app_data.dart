@@ -32,6 +32,14 @@ class AppDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void directUpdateMacroHistory(List<List<double>> newData) {
+    _appData.macrosHistory = newData;
+  }
+
+  void directUpdateExportedItemsHistory(List<List<String>> newData) {
+    _appData.exportedItemsHistory = newData;
+  }
+
   void updateDailyValuesTotal(List<double> newData) {
     for (int i = 0; i < 6; i++) {
       _appData.dailyValuesTotal[i] += newData[i];

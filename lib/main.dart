@@ -17,7 +17,7 @@ void main() async {
     print('Failed to fetch nutrient data.');
   }
   runApp(ChangeNotifierProvider(
-    create:(context) => AppDataProvider(),
+    create: (context) => AppDataProvider(),
     child: MyApp(),
   ));
 }
@@ -76,36 +76,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SlugHealth',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            bottomNavigationBar: menu(),
-            body: TabBarView(
-              children: [
-                HomePage(
-                  dailyValues: daily_values,
-                  macros: macros,
-                ),
-                AddPage(
-                  macros: macrosList,
-                  foodsList: foodsList,
-                ),
-                // MenuPage(),
-                // resolve these errors
-                HistoryPage(
-                  exportedItems: [],
-                  macros: [],
-                ),
-              ],
-            )),
-      ),
-    );
+    return Consumer<AppDataProvider>(builder: (context, appData, child) {
+      appData.updateFoodsMap(foodsList);
+      appData.updateMacrosMap(macrosList);
+      return MaterialApp(
+        title: 'SlugHealth',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        home: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+              bottomNavigationBar: menu(),
+              body: TabBarView(
+                children: [
+                  HomePage(
+                    dailyValues: daily_values,
+                    macros: macros,
+                  ),
+                  AddPage(
+                    macros: macrosList,
+                    foodsList: foodsList,
+                  ),
+                  // MenuPage(),
+                  // resolve these errors
+                  HistoryPage(
+                    exportedItems: [],
+                    macros: [],
+                  ),
+                ],
+              )),
+        ),
+      );
+    });
   }
 }
 
