@@ -34,6 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
         body: SingleChildScrollView(
           child: ExpansionPanelList.radio(
+            materialGapSize: 0,
             children: _items.map((e) => ExpansionPanelRadio(
               value: e,
               headerBuilder: (BuildContext context, bool isExpanded) => ListTile(
