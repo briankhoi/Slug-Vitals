@@ -32,7 +32,8 @@ class _MyAppState extends State<MyApp> {
             body: TabBarView(
               children: [
                 HomePage(),
-                AddPage(),
+                // AddPage(),
+                MenuPage(),
                 HistoryPage(),
               ],
             )),
@@ -43,17 +44,17 @@ class _MyAppState extends State<MyApp> {
 
 Widget menu() {
   return Container(
-    color: Color(0xFF3F5AA6),
+    color: Colors.green.shade300,
     child: TabBar(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
       indicatorSize: TabBarIndicatorSize.tab,
       indicatorPadding: EdgeInsets.all(5.0),
-      indicatorColor: Colors.blue,
+      indicatorColor: Colors.green.shade500,
       tabs: [
         Tab(
           text: "Home",
-          icon: Icon(Icons.directions_car),
+          icon: Icon(Icons.home),
         ),
         Tab(
           text: "Add",
