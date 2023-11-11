@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:nibbles/pages/menu_page.dart';
 
-class AddPage extends StatelessWidget {
-  const AddPage({super.key});
+class AddPage extends StatefulWidget {
+  const AddPage({Key? key, required this.macros, required this.foodsList})
+      : super(key: key);
+  final Map<String, List<List<double>>> macros;
+  final Map<String, List<String>> foodsList;
+  @override
+  State<AddPage> createState() => _AddPageState();
+}
+
+class _AddPageState extends State<AddPage> {
+  Map<String, List<List<double>>> macros = {};
+  Map<String, List<String>> foodsList = {};
+
+  @override
+  void initState() {
+    super.initState();
+    macros = widget.macros;
+    foodsList = widget.foodsList;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> buttonNames = [
@@ -40,7 +58,12 @@ class AddPage extends StatelessWidget {
                         print('Button $index pressed');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MenuPage(currentHall: buttonNames[index],)),
+                          MaterialPageRoute(
+                              builder: (context) => MenuPage(
+                                    currentHall: buttonNames[index],
+                                    macros: macros,
+                                    foodsList: foodsList,
+                                  )),
                         );
                         // Don't need to touch anything after this
                       },
