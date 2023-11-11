@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nibbles/data/app_data.dart';
+import 'package:provider/provider.dart';
 import 'pages/add_page.dart';
 import 'pages/history_page.dart';
 import 'pages/home_page.dart';
@@ -14,7 +16,10 @@ void main() async {
   } else {
     print('Failed to fetch nutrient data.');
   }
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create:(context) => AppDataProvider(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
