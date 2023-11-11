@@ -3,76 +3,81 @@ import 'package:flutter/material.dart';
 
 class MenuPage extends StatefulWidget {
   // MenuPage({super.key, required currentHall});
-  MenuPage({Key? key, required this.currentHall}) : super(key: key);
+  MenuPage(
+      {Key? key,
+      required this.currentHall,
+      required this.macros,
+      required this.foodsList})
+      : super(key: key);
   final String currentHall;
+  final Map<String, List<List<double>>> macros;
+  final Map<String, List<String>> foodsList;
   @override
   State<MenuPage> createState() => _MenuPageState();
 }
 
 class _MenuPageState extends State<MenuPage> {
   String currentHall = '';
-
+  Map<String, List<String>> foodsList = {};
+  Map<String, List<List<double>>> macrosList = {};
+  
   @override
   void initState() {
     super.initState();
     currentHall = widget.currentHall;
-    print(currentHall);
+    macrosList = widget.macros;
+    foodsList = widget.foodsList;
   }
 
-  Map<String, List<String>> foodsList = {
-    // keys are dining hall names
-    'John R. Lewis & College Nine': ['food a'],
-    'Stevenson & Cowell': [
-      'Allergen Free Halal Chicken',
-      'Apple Pie',
-      'food 1',
-    ],
-    'Crown & Merill': [
-      'food1',
-    ],
-    'Porter & Kresge': [
-      'food 1',
-    ],
-    'Rachel Carson & Oakes': [
-      'food 1',
-    ],
+  // Map<String, List<String>> foodsList = {
+  //   // keys are dining hall names
+  //   'John R. Lewis & College Nine': [
+  //     'Crispy Bacon',
+  //     'Hard-boiled Cage Free Egg (1)',
+  //     'Natural Bridges Tofu Scramble',
+  //     'Organic Gluten-Free Oatmeal',
+  //     'Shredded Hashbrowns',
+  //     'Texas French Toast'
+  //   ],
+  //   'Stevenson & Cowell': [
+  //     'Allergen Free Halal Chicken',
+  //     'Apple Pie',
+  //     'food 1',
+  //   ],
+  //   'Crown & Merill': [
+  //     'food1',
+  //   ],
+  //   'Porter & Kresge': [
+  //     'food 1',
+  //   ],
+  //   'Rachel Carson & Oakes': [
+  //     'food 1',
+  //   ],
+  // };
+
+  late Map<String, List<bool>> itemBools = {
+    'John R. Lewis & College Nine':
+        List.filled(foodsList['John R. Lewis & College Nine']!.length, false),
+    'Stevenson & Cowell':
+        List.filled(foodsList['Stevenson & Cowell']!.length, false),
+    'Crown & Merill': List.filled(foodsList['Crown & Merill']!.length, false),
+    'Porter & Kresge': List.filled(foodsList['Porter & Kresge']!.length, false),
+    'Rachel Carson & Oakes':
+        List.filled(foodsList['Rachel Carson & Oakes']!.length, false),
   };
 
-  Map<String, List<bool>> itemBools = {
-    'John R. Lewis & College Nine': [
-      false,
-    ],
-    'Stevenson & Cowell': [false, false, false],
-    'Crown & Merill': [
-      false,
-    ],
-    'Porter & Kresge': [
-      false,
-    ],
-    'Rachel Carson & Oakes': [
-      false,
-    ],
-  };
-
-  Map<String, List<List<double>>> macrosList = {
-    'John R. Lewis & College Nine': [
-      [1.0, 1.0, 1.0],
-    ],
-    'Stevenson & Cowell': [
-      [1.0, 1.0, 1.0],
-      [1.0, 1.0, 1.0],
-      [1.0, 1.0, 1.0]
-    ],
-    'Crown & Merill': [
-      [1.0, 1.0, 1.0],
-    ],
-    'Porter & Kresge': [
-      [1.0, 1.0, 1.0],
-    ],
-    'Rachel Carson & Oakes': [
-      [1.0, 1.0, 1.0],
-    ],
-  };
+  // late Map<String, List<List<double>>> macrosList = {
+  //   'John R. Lewis & College Nine': List.filled(
+  //       foodsList['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
+  //   'Stevenson & Cowell':
+  //       List.filled(foodsList['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
+  //   'Crown & Merill':
+  //       List.filled(foodsList['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
+  //   'Porter & Kresge':
+  //       List.filled(foodsList['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
+  //   'Rachel Carson & Oakes': List.filled(
+  //       foodsList['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+  // };
 
   void updateHall(int updateValue) {
     List<String> keys = foodsList.keys.toList();
