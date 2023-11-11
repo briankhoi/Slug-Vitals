@@ -18,26 +18,45 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var web_scrape_data;
-  var diningHalls = {
+  Map<String, List<String>> foodsList = {
     // keys are dining hall names
     'John R. Lewis & College Nine': [
-      ['a', 'b', 'c']
+      'Crispy Bacon',
+      'Hard-boiled Cage Free Egg (1)',
+      'Natural Bridges Tofu Scramble',
+      'Organic Gluten-Free Oatmeal',
+      'Shredded Hashbrowns',
+      'Texas French Toast'
     ],
     'Stevenson & Cowell': [
-      ['Allergen Free Halal Chicken', 'stat1', 'stat2'],
-      ['Apple Pie', 'stat1', 'stat2'],
-      ['Harissa Tofu', 'stat1', 'stat2'],
+      'Allergen Free Halal Chicken',
+      'Apple Pie',
+      'food 1',
     ],
     'Crown & Merill': [
-      ['1', '2', '3'],
+      'food1',
     ],
     'Porter & Kresge': [
-      ['1', '2', '3'],
+      'food 1',
     ],
     'Rachel Carson & Oakes': [
-      ['1', '2', '3'],
+      'food 1',
     ],
   };
+
+  late Map<String, List<List<double>>> macrosList = {
+    'John R. Lewis & College Nine': List.filled(
+        foodsList['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
+    'Stevenson & Cowell':
+        List.filled(foodsList['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
+    'Crown & Merill':
+        List.filled(foodsList['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
+    'Porter & Kresge':
+        List.filled(foodsList['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
+    'Rachel Carson & Oakes': List.filled(
+        foodsList['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+  };
+
   List<double> daily_values = [];
 
   @override
@@ -55,10 +74,10 @@ class _MyAppState extends State<MyApp> {
             body: TabBarView(
               children: [
                 HomePage(),
-                AddPage(),
+                AddPage(macros: macrosList, foodsList: foodsList,),
                 // MenuPage(),
                 // resolve these errors
-                HistoryPage(),
+                HistoryPage(exportedItems: [], macros: [],),
               ],
             )),
       ),
