@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
                 HomePage(),
                 AddPage(),
                 // MenuPage(),
+                // resolve these errors
                 HistoryPage(),
               ],
             )),
