@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(
             'Dashboard',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.green.shade300, // Set the background color of the AppBar
           elevation: 0, // Remove the shadow
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(calories.toString(), style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
+                      Text(calories.toString(), style: TextStyle(fontSize: 65, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
                       Text('cal', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
                     ],
                   ),
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text(
                               nut[index],
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                             Container(
                               width: 200, // Adjust the width of the progress bar

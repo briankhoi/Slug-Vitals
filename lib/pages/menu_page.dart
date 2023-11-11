@@ -128,7 +128,7 @@ class _MenuPageState extends State<MenuPage> {
           width: 280,
           height: 40,
           decoration: BoxDecoration(
-            color: Colors.amber.shade200,
+            color: Colors.green.shade300,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular((20))),
           ),
