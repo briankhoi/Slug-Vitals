@@ -108,7 +108,6 @@ class _MenuPageState extends State<MenuPage> {
         // list of strings of food names submitted, last element is timestamp
         List<String> exportedItems = [];
         // list of doubles of macros - carbs, proteins, fat
-        // List<double> macros = [0.0, 0.0, 0.0];
         List<String> keys = itemBools.keys.toList();
         List<List<int>> indexTracker = [];
         for (int i = 0; i < keys.length; i++) {
@@ -118,9 +117,6 @@ class _MenuPageState extends State<MenuPage> {
               exportedItems.add(foodsList[keys[i]]![j]);
               indexTracker.add([i, j]);
               setState(() {
-                // macros[0] += macrosList[keys[i]]![j][0];
-                // macros[1] += macrosList[keys[i]]![j][1];
-                // macros[2] += macrosList[keys[i]]![j][2];
                 itemBools[keys[i]]![j] = false;
               });
             }

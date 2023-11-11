@@ -31,14 +31,10 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     super.initState();
-    // print("init length");
-    // print(widget.exportedItems.length);
     if (widget.exportedItems != []) {
       exportedItems = widget.exportedItems;
-      // macros = widget.macros;
       indexTracker = widget.indexTracker;
     }
-    // print(widget.exportedItems.length);
   }
 
   @override
@@ -49,9 +45,6 @@ class _HistoryPageState extends State<HistoryPage> {
     print(exportedItems);
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
       if (!(listEquals(exportedItems, emptyState)) && !listEquals(exportedItems, navState)) {
-        // appData.updateMacroHistory(macros);
-        // appData.updateMacrosTotal(macros);
-        // appData.updateMacrosIndicator(macros);
         appData.updateExportedItemsHistory(exportedItems);
         // fn to access dailyvaluesmap and add the required data from exported items to dv total
         for (int i = 0; i < indexTracker.length; i++) {
@@ -60,9 +53,6 @@ class _HistoryPageState extends State<HistoryPage> {
           int b = indexTracker[i][1];
           Map<String, List<List<double>>> DV_map =
               appData.appData.dailyValuesMap;
-          // print("bruh");
-          // print(DV_map);
-          // print(DV_map.keys.toList());
           List<double> DVs = DV_map[DV_map.keys.toList()[a]]![b];
 
           // log calories
@@ -88,10 +78,7 @@ class _HistoryPageState extends State<HistoryPage> {
           appData.updateMacrosIndicator(macros);
         }
       }
-      // print("build list");
-      // print(exportedItems.runtimeType);
-      // print(emptyState.runtimeType);
-      // print(listEquals(exportedItems[0], emptyState[0]));
+
       int histLen = appData.appData.exportedItemsHistory.length;
       // print(histLen);
       if (histLen == 1 && listEquals(exportedItems, emptyState)) {
