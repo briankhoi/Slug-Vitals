@@ -17,6 +17,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var web_scrape_data;
+  var diningHalls = {
+    // keys are dining hall names
+    'John R. Lewis & College Nine': [
+      ['a', 'b', 'c']
+    ],
+    'Stevenson & Cowell': [
+      ['Allergen Free Halal Chicken', 'stat1', 'stat2'],
+      ['Apple Pie', 'stat1', 'stat2'],
+      ['Harissa Tofu', 'stat1', 'stat2'],
+    ],
+    'Crown & Merill': [
+      ['1', '2', '3'],
+    ],
+    'Porter & Kresge': [
+      ['1', '2', '3'],
+    ],
+    'Rachel Carson & Oakes': [
+      ['1', '2', '3'],
+    ],
+  };
+  List<double> daily_values = [];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

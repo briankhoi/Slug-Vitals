@@ -1,3 +1,4 @@
+import 'package:nibbles/pages/history_page.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatefulWidget {
@@ -18,28 +19,26 @@ class _MenuPageState extends State<MenuPage> {
     print(currentHall);
   }
 
-  var diningHalls = {
+  Map<String, List<String>> foodsList = {
     // keys are dining hall names
-    'John R. Lewis & College Nine': [
-      ['a', 'b', 'c']
-    ],
+    'John R. Lewis & College Nine': ['food a'],
     'Stevenson & Cowell': [
-      ['Allergen Free Halal Chicken', 'stat1', 'stat2'],
-      ['Apple Pie', 'stat1', 'stat2'],
-      ['Harissa Tofu', 'stat1', 'stat2'],
+      'Allergen Free Halal Chicken',
+      'Apple Pie',
+      'food 1',
     ],
     'Crown & Merill': [
-      ['1', '2', '3'],
+      'food1',
     ],
     'Porter & Kresge': [
-      ['1', '2', '3'],
+      'food 1',
     ],
     'Rachel Carson & Oakes': [
-      ['1', '2', '3'],
+      'food 1',
     ],
   };
 
-  var itemBools = {
+  Map<String, List<bool>> itemBools = {
     'John R. Lewis & College Nine': [
       false,
     ],
@@ -55,8 +54,28 @@ class _MenuPageState extends State<MenuPage> {
     ],
   };
 
+  Map<String, List<List<double>>> macrosList = {
+    'John R. Lewis & College Nine': [
+      [1.0, 1.0, 1.0],
+    ],
+    'Stevenson & Cowell': [
+      [1.0, 1.0, 1.0],
+      [1.0, 1.0, 1.0],
+      [1.0, 1.0, 1.0]
+    ],
+    'Crown & Merill': [
+      [1.0, 1.0, 1.0],
+    ],
+    'Porter & Kresge': [
+      [1.0, 1.0, 1.0],
+    ],
+    'Rachel Carson & Oakes': [
+      [1.0, 1.0, 1.0],
+    ],
+  };
+
   void updateHall(int updateValue) {
-    List<String> keys = diningHalls.keys.toList();
+    List<String> keys = foodsList.keys.toList();
     int index = keys.indexOf(currentHall);
     int newIndex = index + updateValue;
     print(newIndex);
@@ -77,7 +96,42 @@ class _MenuPageState extends State<MenuPage> {
 
   void submitForm() {
     // reset all to false
-
+    // list of strings of food names submitted, last element is timestamp
+    List<String> exportedItems = [];
+    // list of doubles of macros - carbs, proteins, fat
+    List<double> macros = [0.0, 0.0, 0.0];
+    List<String> keys = itemBools.keys.toList();
+    for (int i = 0; i < keys.length; i++) {
+      for (int j = 0; j < itemBools[keys[i]]!.length; j++) {
+        bool status = itemBools[keys[i]]![j];
+        if (status) {
+          exportedItems.add(foodsList[keys[i]]![j]);
+          setState(() {
+            macros[0] += macrosList[keys[i]]![j][0];
+            macros[1] += macrosList[keys[i]]![j][1];
+            macros[2] += macrosList[keys[i]]![j][2];
+            itemBools[keys[i]]![j] = false;
+          });
+        }
+      }
+    }
+    int timestamp = 1638592424384;
+    DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    String datetime = tsdate.month.toString() +
+        "/" +
+        tsdate.day.toString() +
+        "/" +
+        tsdate.year.toString();
+    exportedItems.add(datetime);
+    ;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => HistoryPage(
+                exportedItems: exportedItems,
+                macros: macros,
+              )),
+    );
     return;
   }
 
@@ -118,13 +172,12 @@ class _MenuPageState extends State<MenuPage> {
     // retrieve menu items from map
     List<Padding> getChildren() {
       List<Padding> items = [];
-      for (int i = 0; i < diningHalls[currentHall]!.length; i++) {
+      for (int i = 0; i < foodsList[currentHall]!.length; i++) {
         // bool checkboxValue = false;
         Padding item = Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
             child: CheckboxListTile(
-                title: Text(
-                    diningHalls[currentHall]?.elementAt(i).elementAt(0) ?? ''),
+                title: Text(foodsList[currentHall]?.elementAt(i) ?? ''),
                 value: itemBools[currentHall]?.elementAt(i),
                 onChanged: (bool? value) {
                   updateForm(i);
@@ -137,7 +190,7 @@ class _MenuPageState extends State<MenuPage> {
     Widget menuItems = Column(
       children: getChildren(),
     );
-    print(diningHalls[currentHall]);
+    print(foodsList[currentHall]);
     return MaterialApp(
       theme:
           ThemeData(colorSchemeSeed: Colors.green.shade300, useMaterial3: true),
