@@ -97,7 +97,7 @@ Widget menu() {
       indicatorColor: Colors.green.shade500,
       tabs: [
         Tab(
-          text: "Home",
+          text: "Dashboard",
           icon: Icon(Icons.home),
         ),
         Tab(
