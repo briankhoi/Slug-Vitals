@@ -10,7 +10,6 @@ Map<String, num>? nutrientData;
 
 void main() async {
   final nutrientData = await readData();
-  print("Hello world");
   if (nutrientData != null) {
     print(nutrientData);
   } else {

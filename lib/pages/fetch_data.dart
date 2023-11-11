@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
 
 const String baseUrl =
     'https://nutrition.sa.ucsc.edu/label.aspx?locationNum=40&locationName=College+Nine%2fJohn+R.+Lewis+Dining+Hall&dtdate=11%2f10%2f2023&RecNumAndPort=089001*2';
@@ -23,6 +22,7 @@ class HTTPClient {
 class DataScraper {
   // Define the labels
   static final labels = [
+    'Calories',
     'Total Fat',
     'Sat Fat',
     'Trans Fat',
@@ -38,6 +38,7 @@ class DataScraper {
     try {
       // Initialize values in the dictionary
       final nutrientData = <String, num>{};
+
       for (final label in labels) {
         nutrientData[label] = 0;
       }
@@ -48,7 +49,6 @@ class DataScraper {
       }
 
       // Print and return the dictionary
-      print(nutrientData);
       return nutrientData;
     } catch (e) {
       print('DataScraper: $e');
@@ -59,9 +59,16 @@ class DataScraper {
   static void findNutrients(String line, Map<String, num> nutrientData) {
     for (final label in labels) {
       if (line.contains(label)) {
-        final value = findValue(line);
-        if (value != null) {
-          nutrientData[label] = value;
+        if (label == 'Calories') {
+          final value = findCalories(line);
+          if (value != null) {
+            nutrientData[label] = value;
+          }
+        } else {
+          final value = findValue(line);
+          if (value != null) {
+            nutrientData[label] = value;
+          }
         }
       }
     }
@@ -79,7 +86,22 @@ class DataScraper {
     }
     return null;
   }
+
+  static num? findCalories(String line) {
+    final afterCalories =
+        line.substring(line.indexOf('Calories') + 'Calories'.length);
+
+    final match = RegExp(r'(\d+)').firstMatch(afterCalories);
+
+    if (match != null) {
+      final value = int.tryParse(match.group(1)!) ?? 0;
+      return value;
+    }
+    return null;
+  }
+
 }
+
 
 Future<Map<String, num>?> readData() async {
   final html = await HTTPClient.fetchData();
