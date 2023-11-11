@@ -8,11 +8,35 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   var diningHalls = {
     // keys are dining hall names
-    'John R. Lewis & College Nine': [('a', 'b', 'c')],
-    'Stevenson & Cowell': [('1', '2', '3')],
-    'Kresge': [('1', '2', '3')],
-    'Porter': [('1', '2', '3')],
+    'John R. Lewis & College Nine': [
+      ['a', 'b', 'c']
+    ],
+    'Stevenson & Cowell': [
+      ['Allergen Free Halal Chicken', 'stat1', 'stat2'],
+      ['Apple Pie', 'stat1', 'stat2'],
+      ['Harissa Tofu', 'stat1', 'stat2'],
+    ],
+    'Kresge': [
+      ['1', '2', '3']
+    ],
+    'Porter': [
+      ['1', '2', '3']
+    ],
   };
+
+  var itemBools = {
+    'John R. Lewis & College Nine': [
+      false,
+    ],
+    'Stevenson & Cowell': [false, false, false],
+    'Kresge': [
+      false,
+    ],
+    'Porter': [
+      false,
+    ],
+  };
+
   String currentHall = 'Stevenson & Cowell';
 
   void updateHall(int updateValue) {
@@ -23,6 +47,14 @@ class _MenuPageState extends State<MenuPage> {
     if (newIndex >= 0 || newIndex < keys.length) {
       setState(() {
         currentHall = keys[newIndex];
+      });
+    }
+  }
+
+  void updateForm(int index) {
+    if (itemBools[currentHall] != null) {
+      setState(() {
+        itemBools[currentHall]?[index] = !itemBools[currentHall]![index];
       });
     }
   }
@@ -52,7 +84,7 @@ class _MenuPageState extends State<MenuPage> {
           width: 280,
           height: 40,
           decoration: BoxDecoration(
-            color: Colors.amber[50],
+            color: Colors.amber.shade200,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular((20))),
           ),
@@ -61,12 +93,28 @@ class _MenuPageState extends State<MenuPage> {
           ),
         )));
 
+    // retrieve menu items from map
+    List<CheckboxListTile> getChildren() {
+      List<CheckboxListTile> items = [];
+      for (int i = 0; i < diningHalls[currentHall]!.length; i++) {
+        // bool checkboxValue = false;
+        CheckboxListTile item = CheckboxListTile(
+            title:
+                Text(diningHalls[currentHall]?.elementAt(i).elementAt(0) ?? ''),
+            value: itemBools[currentHall]?.elementAt(i),
+            onChanged: (bool? value) {
+              updateForm(i);
+            });
+        items.add(item);
+      }
+      return items;
+    }
+
+    Widget menuItems = Column(
+      children: getChildren(),
+    );
+    print(diningHalls[currentHall]);
     return MaterialApp(
-      // color: Colors.red.shade100,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-      //   useMaterial3: true,
-      // ),
       home: Scaffold(
           body: ListView(
         children: [
@@ -87,8 +135,8 @@ class _MenuPageState extends State<MenuPage> {
                   diningHall,
                   rightArrow,
                 ],
-              ))
-          // menuItems,
+              )),
+          menuItems,
         ],
       )),
     );
