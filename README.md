@@ -1,4 +1,4 @@
-# SlugHealth
+# SlugVitals
 
 A flutter project to log meals from UCSC dining and track your progress toward reaching your FDA recommended daily values.
 
