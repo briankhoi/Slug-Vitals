@@ -7,10 +7,13 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   @override
+
+  int histLen = 10;
+
+
   Widget build(BuildContext context) {
-    //return Center(child: Text('History Page'));
-    final List<Map<String, dynamic>> _items = List.generate(
-      10,
+    List<Map<String, dynamic>> _items = List.generate(
+      histLen,
         (index) => {
         'id': index,
           'title': 'Item $index',
