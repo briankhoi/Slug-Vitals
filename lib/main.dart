@@ -4,9 +4,10 @@ import 'pages/history_page.dart';
 import 'pages/home_page.dart';
 import 'pages/menu_page.dart';
 import 'pages/fetch_data.dart';
+import 'pages/menu_page.dart';
 
 // Variable to store the nutrient data globally
-Map<String, num>? nutrientData;
+Map<String, List<num>> nutrientData = {};
 
 void main() async {
   final nutrientData = await readData();
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       'Hard-boiled Cage Free Egg (1)',
       'Natural Bridges Tofu Scramble',
       'Organic Gluten-Free Oatmeal',
-      'Shredded Hashbrowns',
+      'Shredded Hash browns',
       'Texas French Toast'
     ],
     'Stevenson & Cowell': [

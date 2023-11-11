@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'screen/main.dart';
+import 'pages/menu_page.dart';
+
+Map<String, num> dv_accumulated = {
+  'Calories': 0,
+  'Total Fat': 0,
+  'Tot. Carb.': 0,
+  'Sat. Fat': 0,
+  'Dietary Fiber': 0,
+  'Trans Fat': 0,
+  'Sugars': 0,
+  'Cholesterol': 0,
+  'Protein': 0,
+  'Sodium': 0,
+};
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,10 +22,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<List<String>> hist = history;
+  Map<String, List<num>> data = nutrientData;
   List<String> nut = ['Fiber', 'Sugar', 'Cholesterol', 'Sodium', 'Sat Fat', 'Trans Fat'];
-  List<double> progressValues = [0.5, 0.3, 0.67, 0.9, 1, 0.3]; // values only change this!!
-  List<double> macro = [0.5, 0.3, 0.2]; // Adjust the values as needed
-  int calories = 1009;
+  List<double> progressValues = [0.0, 0.0, 0.0, 0.0, 0, 0.0]; // values only change this!!
+  List<double> macro = [0.0, 0.0, 0.0]; // Adjust the values as needed
+  int calories = 0;
   List<String> macroTitles = ['Fat', 'Carbs', 'Protein']; // Titles for the sections
   List<Color> macroColors = [
     Colors.green.shade600, // Protein
@@ -128,6 +145,21 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void update_dvs() {
+      if (history.isNotEmpty && nutrientData != null) {
+        for (List<String> meal in history) {
+          String date = meal.last;
+          List<num>? nutrientValues = nutrientData![date];
+
+          if (nutrientValues != null && nutrientValues.length == dv_accumulated.length) {
+            for (int i = 0; i < nutrientValues.length; i++) {
+              dv_accumulated[dv_accumulated.keys.elementAt(i)] += nutrientValues[i] ?? 0;
+            }
+          }
+        }
+      }
   }
 }
 

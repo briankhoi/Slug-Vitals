@@ -1,6 +1,13 @@
 import 'package:nibbles/pages/history_page.dart';
 import 'package:flutter/material.dart';
 
+
+// globals.dart
+
+List<List<String>> history = [];
+
+
+
 class MenuPage extends StatefulWidget {
   // MenuPage({super.key, required currentHall});
   MenuPage(
@@ -61,12 +68,13 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   void submitForm() {
-    // reset all to false
-    // list of strings of food names submitted, last element is timestamp
+    // Reset all to false
+    // List of strings of food names submitted, last element is timestamp
     List<String> exportedItems = [];
-    // list of doubles of macros - carbs, proteins, fat
+    // List of doubles of macros - carbs, proteins, fat
     List<double> macros = [0.0, 0.0, 0.0];
     List<String> keys = itemBools.keys.toList();
+
     for (int i = 0; i < keys.length; i++) {
       for (int j = 0; j < itemBools[keys[i]]!.length; j++) {
         bool status = itemBools[keys[i]]![j];
@@ -81,27 +89,28 @@ class _MenuPageState extends State<MenuPage> {
         }
       }
     }
+
     int timestamp = 1638592424384;
     DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    String datetime = tsdate.month.toString() +
-        "/" +
-        tsdate.day.toString() +
-        "/" +
-        tsdate.year.toString();
+    String datetime =
+        tsdate.month.toString() + "/" + tsdate.day.toString() + "/" + tsdate.year.toString();
     exportedItems.add(datetime);
-    ;
+
+    // Append the list of exportedItems to the global history list
+    history.add(List.from(exportedItems));
+    print("This is the history:");
+    print(history);
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => 
-          
-            HistoryPage(
-                exportedItems: exportedItems,
-                macros: macros,
-              )),
+        builder: (context) => HistoryPage(
+          exportedItems: exportedItems,
+          macros: macros,
+        ),
+      ),
     );
-    return;
   }
+
 
   @override
   Widget build(BuildContext context) {

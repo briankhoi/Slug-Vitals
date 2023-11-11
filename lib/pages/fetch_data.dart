@@ -41,7 +41,6 @@ class DataScraper {
           break;
         }
       }
-      print(title);
       nutrientData[title!] = findNutrientValues(htmlArray);
 
       return nutrientData;
