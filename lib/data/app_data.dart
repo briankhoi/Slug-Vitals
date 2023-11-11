@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppData {
-  // Define your data variables here
+// history info
   List<List<String>> exportedItemsHistory = [];
   List<List<double>> macrosHistory = [];
+// dashboard info
   List<double> dailyValuesTotal = List.filled(6, 0.0);
   // % float values
   List<double> dailyValuesIndicator = List.filled(6, 0.0);
   List<double> macrosTotal = List.filled(3, 0.0);
   List<double> macrosIndicator = List.filled(3, 0.0);
   List<double> thresholds = List.filled(6, 100.0);
-  // Add any other data-related methods if needed
+// food info
+  Map<String, List<List<double>>> macrosMap = {};
+  Map<String, List<String>> foodsMap = {};
 }
 
 class AppDataProvider with ChangeNotifier {
@@ -58,6 +61,16 @@ class AppDataProvider with ChangeNotifier {
     for (int i = 0; i < 3; i++) {
       _appData.macrosIndicator[i] = _appData.macrosTotal[i] / sum;
     }
+    notifyListeners();
+  }
+
+  void updateMacrosMap(Map<String, List<List<double>>> newData) {
+    _appData.macrosMap = newData;
+    notifyListeners();
+  }
+
+  void updateFoodsMap(Map<String, List<String>> newData) {
+    _appData.foodsMap = newData;
     notifyListeners();
   }
 }
