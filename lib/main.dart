@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'pages/add_page.dart';
 import 'pages/history_page.dart';
 import 'pages/home_page.dart';
-import 'pages/menu_page.dart';
 import 'pages/fetch_data.dart';
 
 // Variable to store the nutrient data globally
@@ -66,7 +65,9 @@ class _MyAppState extends State<MyApp> {
         foodsList['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
   };
 
-  List<double> daily_values = [];
+  // List<double> daily_values = [50, 64, 21, 8, 32, 95];
+  List<double> daily_values = List.filled(6, 0);
+  List<double> macros = [100, 50, 12];
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +83,22 @@ class _MyAppState extends State<MyApp> {
             bottomNavigationBar: menu(),
             body: TabBarView(
               children: [
-                HomePage(),
-                AddPage(macros: macrosList, foodsList: foodsList,),
+                HomePage(
+                  dailyValues: daily_values,
+                  macros: macros,
+                ),
+                AddPage(
+                  macros: macrosList,
+                  foodsList: foodsList,
+                ),
                 // MenuPage(),
                 // resolve these errors
-                HistoryPage(exportedItems: [], macros: [],),
+                HistoryPage(
+                  exportedItems: [],
+                  macros: [],
+                ),
               ],
-            )
-          ),
+            )),
       ),
     );
   }

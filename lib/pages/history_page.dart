@@ -1,6 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import './home_page.dart';
+import './add_page.dart';
+import './history_page.dart';
+// import 'pages/home_page.dart';
+import './fetch_data.dart';
 
 class HistoryPage extends StatefulWidget {
   HistoryPage({Key? key, required this.exportedItems, required this.macros})
@@ -17,8 +21,8 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     super.initState();
-    print("init length");
-    print(widget.exportedItems.length);
+    // print("init length");
+    // print(widget.exportedItems.length);
     if (widget.exportedItems != []) {
       exportedItems.add(widget.exportedItems);
       macros.add(widget.macros);
@@ -44,15 +48,6 @@ class _HistoryPageState extends State<HistoryPage> {
             appBar: AppBar(
               backgroundColor: Colors.green.shade300,
               title: Text("History"),
-              // leading: IconButton(
-              //     icon: Icon(Icons.arrow_back),
-              //     onPressed: () {
-              //       Navigator.of(context).pop();
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => HomePage()),
-              //       // );
-              //     }),
             ),
             body: Center(child: Text("No meals inputted!")),
           ));
@@ -71,40 +66,89 @@ class _HistoryPageState extends State<HistoryPage> {
             });
 
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Nexa',
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green.shade300,
-          title: Text("History"),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomePage()),
-                // );
-              }),
+        theme: ThemeData(
+          fontFamily: 'Nexa',
         ),
-        body: SingleChildScrollView(
-          child: ExpansionPanelList.radio(
-            materialGapSize: 0,
-            children: _items
-                .map((e) => ExpansionPanelRadio(
-                    value: e,
-                    headerBuilder: (BuildContext context, bool isExpanded) =>
-                        ListTile(
-                          title: Text(e['title'].toString()),
-                        ),
-                    body: Container(
-                      child: Text(e['description']),
-                    )))
-                .toList(),
+        home: Column(children: [
+          Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.green.shade300,
+              title: Text("History"),
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => HomePage()),
+                    // );
+                  }),
+            ),
+            body: SingleChildScrollView(
+              child: ExpansionPanelList.radio(
+                materialGapSize: 0,
+                children: _items
+                    .map((e) => ExpansionPanelRadio(
+                        value: e,
+                        headerBuilder:
+                            (BuildContext context, bool isExpanded) => ListTile(
+                                  title: Text(e['title'].toString()),
+                                ),
+                        body: Container(
+                          child: Text(e['description']),
+                        )))
+                    .toList(),
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+          DefaultTabController(
+            length: 3,
+            child: Scaffold(
+                bottomNavigationBar: menu(),
+                body: TabBarView(
+                  children: [
+                    HomePage(
+                      dailyValues: daily_values,
+                      macros: macros,
+                    ),
+                    AddPage(
+                      macros: macrosList,
+                      foodsList: foodsList,
+                    ),
+                    HistoryPage(
+                      exportedItems: [],
+                      macros: [],
+                    ),
+                  ],
+                )),
+          )
+        ]));
   }
+}
+
+Widget menu() {
+  return Container(
+    color: Colors.green.shade300,
+    child: TabBar(
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.white70,
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorPadding: EdgeInsets.all(5.0),
+      indicatorColor: Colors.green.shade500,
+      tabs: [
+        Tab(
+          text: "Dashboard",
+          icon: Icon(Icons.home),
+        ),
+        Tab(
+          text: "Add",
+          icon: Icon(Icons.add_circle_outline),
+        ),
+        Tab(
+          text: "History",
+          icon: Icon(Icons.history),
+        ),
+      ],
+    ),
+  );
 }
