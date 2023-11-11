@@ -1,6 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:nibbles/data/app_data.dart';
 import './home_page.dart';
+import './add_page.dart';
+import './history_page.dart';
+// import 'pages/home_page.dart';
+import './fetch_data.dart';
 
 class HistoryPage extends StatefulWidget {
   HistoryPage({Key? key, required this.exportedItems, required this.macros})
@@ -12,99 +19,95 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  List<List<String>> exportedItems = [];
-  List<List<double>> macros = [];
+  List<String> exportedItems = [];
+  List<double> macros = [];
+
   @override
   void initState() {
     super.initState();
-    print("init length");
-    print(widget.exportedItems.length);
+    // print("init length");
+    // print(widget.exportedItems.length);
     if (widget.exportedItems != []) {
-      exportedItems.add(widget.exportedItems);
-      macros.add(widget.macros);
+      exportedItems = widget.exportedItems;
+      macros = widget.macros;
     }
     // print(widget.exportedItems.length);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<List<String>> emptyState = [[]];
-    // print("build list");
-    // print(exportedItems.runtimeType);
-    // print(emptyState.runtimeType);
-    // print(listEquals(exportedItems[0], emptyState[0]));
-    int histLen = exportedItems.length;
-    // print(histLen);
-    if (histLen == 1 && listEquals(exportedItems[0], emptyState[0])) {
-      return MaterialApp(
-          theme: ThemeData(
-            fontFamily: 'Nexa',
-          ),
-          home: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.green.shade300,
-              title: Text("History"),
-              // leading: IconButton(
-              //     icon: Icon(Icons.arrow_back),
-              //     onPressed: () {
-              //       Navigator.of(context).pop();
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => HomePage()),
-              //       // );
-              //     }),
+    List<String> emptyState = [];
+    return Consumer<AppDataProvider>(builder: (context, appData, child) {
+      if (!(listEquals(exportedItems, emptyState))) {
+        appData.updateMacroHistory(macros);
+        appData.updateMacrosTotal(macros);
+        appData.updateMacrosIndicator(macros);
+        appData.updateExportedItemsHistory(exportedItems);
+      }
+      // print("build list");
+      // print(exportedItems.runtimeType);
+      // print(emptyState.runtimeType);
+      // print(listEquals(exportedItems[0], emptyState[0]));
+      int histLen = appData.appData.exportedItemsHistory.length;
+      // print(histLen);
+      if (histLen == 0) {
+        return MaterialApp(
+            theme: ThemeData(
+              fontFamily: 'Nexa',
             ),
-            body: Center(child: Text("No meals inputted!")),
-          ));
-    }
-    List<Map<String, dynamic>> _items = List.generate(
-        histLen,
-        (index) => {
-              'id': index,
-              'title': exportedItems[index].toString(),
-              'description': 'Carbs: ' +
-                  macros[index][0].toString() +
-                  ', Protein: ' +
-                  macros[index][1].toString() +
-                  ', Fats: ' +
-                  macros[index][2].toString(),
-            });
+            home: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.green.shade300,
+                title: Text("History"),
+              ),
+              body: Center(child: Text("No meals inputted!")),
+            ));
+      }
 
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Nexa',
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green.shade300,
-          title: Text("History"),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomePage()),
-                // );
-              }),
+      List<Map<String, dynamic>> _items = List.generate(
+          histLen,
+          (index) => {
+                'id': index,
+                'title': appData.appData.exportedItemsHistory[index].toString(),
+                'description': 'Carbs: ' +
+                    appData.appData.macrosHistory[index][0].toString() +
+                    ', Protein: ' +
+                    appData.appData.macrosHistory[index][1].toString() +
+                    ', Fats: ' +
+                    appData.appData.macrosHistory[index][2].toString(),
+              });
+      return MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Nexa',
         ),
-        body: SingleChildScrollView(
-          child: ExpansionPanelList.radio(
-            materialGapSize: 0,
-            children: _items
-                .map((e) => ExpansionPanelRadio(
-                    value: e,
-                    headerBuilder: (BuildContext context, bool isExpanded) =>
-                        ListTile(
-                          title: Text(e['title'].toString()),
-                        ),
-                    body: Container(
-                      child: Text(e['description']),
-                    )))
-                .toList(),
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green.shade300,
+            title: Text("History"),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+          ),
+          body: SingleChildScrollView(
+            child: ExpansionPanelList.radio(
+              materialGapSize: 0,
+              children: _items
+                  .map((e) => ExpansionPanelRadio(
+                      value: e,
+                      headerBuilder: (BuildContext context, bool isExpanded) =>
+                          ListTile(
+                            title: Text(e['title'].toString()),
+                          ),
+                      body: Container(
+                        child: Text(e['description']),
+                      )))
+                  .toList(),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

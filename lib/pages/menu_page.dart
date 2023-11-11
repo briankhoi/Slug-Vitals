@@ -1,5 +1,7 @@
 import 'package:nibbles/pages/history_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:nibbles/data/app_data.dart';
 
 class MenuPage extends StatefulWidget {
   // MenuPage({super.key, required currentHall});
@@ -60,49 +62,6 @@ class _MenuPageState extends State<MenuPage> {
     }
   }
 
-  void submitForm() {
-    // reset all to false
-    // list of strings of food names submitted, last element is timestamp
-    List<String> exportedItems = [];
-    // list of doubles of macros - carbs, proteins, fat
-    List<double> macros = [0.0, 0.0, 0.0];
-    List<String> keys = itemBools.keys.toList();
-    for (int i = 0; i < keys.length; i++) {
-      for (int j = 0; j < itemBools[keys[i]]!.length; j++) {
-        bool status = itemBools[keys[i]]![j];
-        if (status) {
-          exportedItems.add(foodsList[keys[i]]![j]);
-          setState(() {
-            macros[0] += macrosList[keys[i]]![j][0];
-            macros[1] += macrosList[keys[i]]![j][1];
-            macros[2] += macrosList[keys[i]]![j][2];
-            itemBools[keys[i]]![j] = false;
-          });
-        }
-      }
-    }
-    int timestamp = 1638592424384;
-    DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    String datetime = tsdate.month.toString() +
-        "/" +
-        tsdate.day.toString() +
-        "/" +
-        tsdate.year.toString();
-    exportedItems.add(datetime);
-    ;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => 
-          
-            HistoryPage(
-                exportedItems: exportedItems,
-                macros: macros,
-              )),
-    );
-    return;
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget leftArrow = GestureDetector(
@@ -138,62 +97,110 @@ class _MenuPageState extends State<MenuPage> {
         )));
 
     // retrieve menu items from map
-    List<Padding> getChildren() {
-      List<Padding> items = [];
-      for (int i = 0; i < foodsList[currentHall]!.length; i++) {
-        // bool checkboxValue = false;
-        Padding item = Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: CheckboxListTile(
-                title: Text(foodsList[currentHall]?.elementAt(i) ?? ''),
-                value: itemBools[currentHall]?.elementAt(i),
-                onChanged: (bool? value) {
-                  updateForm(i);
-                }));
-        items.add(item);
-      }
-      return items;
-    }
+    // print(foodsList[currentHall]);
 
-    Widget menuItems = Column(
-      children: getChildren(),
-    );
-    print(foodsList[currentHall]);
-    return MaterialApp(
-      theme:
-          ThemeData(colorSchemeSeed: Colors.green.shade300, useMaterial3: true),
-      home: Scaffold(
-          body: ListView(
-        children: [
-          AppBar(
-            backgroundColor: Colors.green.shade300,
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  // Navigator.of(context).pop();
-                  Navigator.pop(context);
-                }),
-            title: Text('Menu'),
-          ),
-          Padding(
+    return Consumer<AppDataProvider>(builder: (context, appData, child) {
+      void submitForm() {
+        // reset all to false
+        // list of strings of food names submitted, last element is timestamp
+        List<String> exportedItems = [];
+        // list of doubles of macros - carbs, proteins, fat
+        List<double> macros = [0.0, 0.0, 0.0];
+        List<String> keys = itemBools.keys.toList();
+        for (int i = 0; i < keys.length; i++) {
+          for (int j = 0; j < itemBools[keys[i]]!.length; j++) {
+            bool status = itemBools[keys[i]]![j];
+            if (status) {
+              exportedItems.add(foodsList[keys[i]]![j]);
+              setState(() {
+                macros[0] += macrosList[keys[i]]![j][0];
+                macros[1] += macrosList[keys[i]]![j][1];
+                macros[2] += macrosList[keys[i]]![j][2];
+                itemBools[keys[i]]![j] = false;
+              });
+            }
+          }
+        }
+        int timestamp = 1638592424384;
+        DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        String datetime = tsdate.month.toString() +
+            "/" +
+            tsdate.day.toString() +
+            "/" +
+            tsdate.year.toString();
+        exportedItems.add(datetime);
+        ;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HistoryPage(
+                    exportedItems: exportedItems,
+                    macros: macros,
+                  )),
+        );
+        return;
+      }
+
+      List<Padding> getChildren() {
+        List<Padding> items = [];
+        for (int i = 0;
+            i < appData.appData.foodsMap[currentHall]!.length;
+            i++) {
+          // bool checkboxValue = false;
+          Padding item = Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
-              child: Row(
-                children: [
-                  leftArrow,
-                  diningHall,
-                  rightArrow,
-                ],
-              )),
-          menuItems,
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FilledButton(
-                // color: Colors.green.shade300,
-                onPressed: submitForm,
-                child: const Text('Submit')),
-          ),
-        ],
-      )),
-    );
+              child: CheckboxListTile(
+                  title: Text(
+                      appData.appData.foodsMap[currentHall]?.elementAt(i) ??
+                          ''),
+                  value: itemBools[currentHall]?.elementAt(i),
+                  onChanged: (bool? value) {
+                    updateForm(i);
+                  }));
+          items.add(item);
+        }
+        return items;
+      }
+
+      Widget menuItems = Column(
+        children: getChildren(),
+      );
+      return MaterialApp(
+        theme: ThemeData(
+            colorSchemeSeed: Colors.green.shade300, useMaterial3: true),
+        home: Scaffold(
+            body: ListView(
+          children: [
+            AppBar(
+              backgroundColor: Colors.green.shade300,
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    // Navigator.of(context).pop();
+                    Navigator.pop(context);
+                  }),
+              title: Text('Menu'),
+            ),
+            Padding(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  children: [
+                    leftArrow,
+                    diningHall,
+                    rightArrow,
+                  ],
+                )),
+            menuItems,
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: FilledButton(
+                  // color: Colors.green.shade300,
+                  onPressed: submitForm,
+                  child: const Text('Submit')),
+            ),
+          ],
+        )),
+      );
+    });
   }
 }
