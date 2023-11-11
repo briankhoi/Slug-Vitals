@@ -59,6 +59,12 @@ class _MenuPageState extends State<MenuPage> {
     }
   }
 
+  void submitForm() {
+    // reset all to false
+
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget leftArrow = GestureDetector(
@@ -94,17 +100,19 @@ class _MenuPageState extends State<MenuPage> {
         )));
 
     // retrieve menu items from map
-    List<CheckboxListTile> getChildren() {
-      List<CheckboxListTile> items = [];
+    List<Padding> getChildren() {
+      List<Padding> items = [];
       for (int i = 0; i < diningHalls[currentHall]!.length; i++) {
         // bool checkboxValue = false;
-        CheckboxListTile item = CheckboxListTile(
-            title:
-                Text(diningHalls[currentHall]?.elementAt(i).elementAt(0) ?? ''),
-            value: itemBools[currentHall]?.elementAt(i),
-            onChanged: (bool? value) {
-              updateForm(i);
-            });
+        Padding item = Padding(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: CheckboxListTile(
+                title: Text(
+                    diningHalls[currentHall]?.elementAt(i).elementAt(0) ?? ''),
+                value: itemBools[currentHall]?.elementAt(i),
+                onChanged: (bool? value) {
+                  updateForm(i);
+                }));
         items.add(item);
       }
       return items;
@@ -115,6 +123,8 @@ class _MenuPageState extends State<MenuPage> {
     );
     print(diningHalls[currentHall]);
     return MaterialApp(
+      theme:
+          ThemeData(colorSchemeSeed: Colors.green.shade300, useMaterial3: true),
       home: Scaffold(
           body: ListView(
         children: [
@@ -137,6 +147,13 @@ class _MenuPageState extends State<MenuPage> {
                 ],
               )),
           menuItems,
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: FilledButton(
+                // color: Colors.green.shade300,
+                onPressed: submitForm,
+                child: const Text('Filled')),
+          ),
         ],
       )),
     );
