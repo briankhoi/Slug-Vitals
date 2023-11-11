@@ -7,15 +7,15 @@ import 'pages/home_page.dart';
 import 'pages/fetch_data.dart';
 
 // Variable to store the nutrient data globally
-Map<String, num>? nutrientData;
+Map<String, List<double>>? nutrientData;
 
 void main() async {
   nutrientData = await readData();
-  // if (nutrientData != null) {
-  //   print(nutrientData);
-  // } else {
-  //   print('Failed to fetch nutrient data.');
-  // }
+  if (nutrientData != null) {
+    print(nutrientData);
+  } else {
+    print('Failed to fetch nutrient data.');
+  }
   runApp(ChangeNotifierProvider(
     create: (context) => AppDataProvider(),
     child: MyApp(),
@@ -30,17 +30,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var web_scrape_data;
-
   // List<double> daily_values = [50, 64, 21, 8, 32, 95];
   List<double> daily_values = List.filled(6, 0);
-  List<double> macros = [100, 50, 12];
+  // List<double> macros = [100, 50, 12];
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
+      List<String> keys = nutrientData!.keys.toList();
+      // update daily values array
+      for (int i = 0; i < keys.length; i++) {
+        appData.updateDailyValuesMap(
+            'John R. Lewis & College Nine', nutrientData![keys[i]]!);
+        appData.updateFoodsMap('John R. Lewis & College Nine', keys[i]);
+        // appData.notifyListeners();
+      }
       return MaterialApp(
-        title: 'SlugHealth',
+        title: 'SlugVitals',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
@@ -53,7 +59,7 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   HomePage(
                     dailyValues: daily_values,
-                    macros: macros,
+                    macros: [],
                   ),
                   AddPage(
                     macros: appData.appData.macrosMap,
@@ -62,8 +68,9 @@ class _MyAppState extends State<MyApp> {
                   // MenuPage(),
                   // resolve these errors
                   HistoryPage(
+                    indexTracker: [],
                     exportedItems: [],
-                    macros: [],
+                    // macros: [],
                   ),
                 ],
               )),

@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     for (int i = 0; i < dailyValues.length; i++) {
       dailyValues[i] += widget.dailyValues[i];
-      if (i < 3) {
+      if (i < 3 && widget.macros.length == 3) {
         macros[i] += widget.macros[i];
       }
     }
@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
     'Trans. Fat'
   ];
 
-  int calories = 1009;
 
   List<String> macroTitles = [
     'Fats',
@@ -65,6 +64,7 @@ class _HomePageState extends State<HomePage> {
       return MaterialApp(
         theme: ThemeData(
           fontFamily: 'Nexa',
+        ),
         home: Scaffold(
           appBar: AppBar(
             title: Text(
@@ -116,15 +116,27 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(calories.toString(), style: TextStyle(fontSize: 65, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
-                      Text('cal', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
-                    ],
-                  ),
-                ],
+                   Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          appData.appData.calories.round().toString(),
+                          style: TextStyle(
+                              fontSize: 70,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF42434F)),
+                        ),
+                        Text(
+                          'cal',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF42434F)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               Positioned(
                 bottom: 0, // GREEN BOX
@@ -161,30 +173,6 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
-// =======
-//                   ),
-//                   child: Column(
-//                     children: List.generate(
-//                       nut.length,
-//                           (index) => Padding(
-//                         padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0, top: 20.0),
-//                         child: Row(
-//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                           crossAxisAlignment: CrossAxisAlignment.center,
-//                           children: [
-//                             Text(
-//                               nut[index],
-//                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-//                             ),
-//                             Container(
-//                               width: 200, // Adjust the width of the progress bar
-//                               child: LinearProgressIndicator(
-//                                 value: progressValues[index], // Set the progress value based on your requirements
-//                                 minHeight: 30, // Adjust the height of the progress bar
-//                                 backgroundColor: Colors.white, // Background color of the progress bar
-//                                 valueColor: AlwaysStoppedAnimation<Color>(Colors.green), // Color of the progress bar
-//                                 borderRadius: BorderRadius.circular(25.0), // round the edges
-// >>>>>>> main
                               ),
                               Container(
                                 width:

@@ -100,29 +100,34 @@ class _MenuPageState extends State<MenuPage> {
     // print(foodsList[currentHall]);
 
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
+      print(appData.appData.foodsMap);
+      print("bruh1");
+      print(appData.appData.foodsMap['John R. Lewis & College Nine']![0]);
       void submitForm() {
         // reset all to false
         // list of strings of food names submitted, last element is timestamp
         List<String> exportedItems = [];
         // list of doubles of macros - carbs, proteins, fat
-        List<double> macros = [0.0, 0.0, 0.0];
+        // List<double> macros = [0.0, 0.0, 0.0];
         List<String> keys = itemBools.keys.toList();
+        List<List<int>> indexTracker = [];
         for (int i = 0; i < keys.length; i++) {
           for (int j = 0; j < itemBools[keys[i]]!.length; j++) {
             bool status = itemBools[keys[i]]![j];
             if (status) {
               exportedItems.add(foodsList[keys[i]]![j]);
+              indexTracker.add([i, j]);
               setState(() {
-                macros[0] += macrosList[keys[i]]![j][0];
-                macros[1] += macrosList[keys[i]]![j][1];
-                macros[2] += macrosList[keys[i]]![j][2];
+                // macros[0] += macrosList[keys[i]]![j][0];
+                // macros[1] += macrosList[keys[i]]![j][1];
+                // macros[2] += macrosList[keys[i]]![j][2];
                 itemBools[keys[i]]![j] = false;
               });
             }
           }
         }
-        int timestamp = 1638592424384;
-        DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        // int timestamp = DateTime.now();
+        DateTime tsdate = DateTime.now();
         String datetime = tsdate.month.toString() +
             "/" +
             tsdate.day.toString() +
@@ -130,12 +135,14 @@ class _MenuPageState extends State<MenuPage> {
             tsdate.year.toString();
         exportedItems.add(datetime);
         ;
+        print(indexTracker);
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => HistoryPage(
+                    indexTracker: indexTracker,
                     exportedItems: exportedItems,
-                    macros: macros,
+                    // macros: macros,
                   )),
         );
         return;

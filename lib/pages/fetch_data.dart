@@ -29,9 +29,9 @@ class DataScraper {
     'Sodium',
   ];
 
-  static Map<String, List<num>> run(List<String> htmlArray) {
+  static Map<String, List<double>> run(List<String> htmlArray) {
     try {
-      final nutrientData = Map<String, List<num>>();
+      final nutrientData = Map<String, List<double>>();
       String? title;
 
       // Parse each line in the array
@@ -56,13 +56,13 @@ class DataScraper {
     return match?.group(1)?.trim();
   }
 
-  static List<num> findNutrientValues(List<String> htmlArray) {
-    final values = <num>[];
+  static List<double> findNutrientValues(List<String> htmlArray) {
+    final values = <double>[];
 
     for (final line in htmlArray) {
       for (final label in labels) {
         if (line.contains(label)) {
-          num? value;
+          double? value;
 
           if (label == 'Calories') {
             value = findCalories(line);
@@ -80,7 +80,7 @@ class DataScraper {
     return values;
   }
 
-  static num? findValue(String line) {
+  static double? findValue(String line) {
     final matches = RegExp(r'(\d+)[\s]*(g|mg)').allMatches(line);
     if (matches.isNotEmpty) {
       final match = matches.first;
@@ -94,22 +94,22 @@ class DataScraper {
     return null;
   }
 
-  static num? findCalories(String line) {
+  static double? findCalories(String line) {
     final afterCalories =
         line.substring(line.indexOf('Calories') + 'Calories'.length);
 
     final match = RegExp(r'(\d+)').firstMatch(afterCalories);
 
     if (match != null) {
-      final value = int.tryParse(match.group(1)!) ?? 0;
+      final value = double.tryParse(match.group(1)!) ?? 0;
       return value;
     }
     return null;
   }
 }
 
-Future<Map<String, List<num>>> readData() async {
-  Map<String, List<num>> combinedData = {};
+Future<Map<String, List<double>>> readData() async {
+  Map<String, List<double>> combinedData = {};
 
   List<String> foodUrls = [
     'https://nutrition.sa.ucsc.edu/label.aspx?locationNum=40&locationName=College+Nine%2fJohn+R.+Lewis+Dining+Hall&dtdate=11%2f10%2f2023&RecNumAndPort=089001*2',

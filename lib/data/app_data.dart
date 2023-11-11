@@ -6,6 +6,7 @@ class AppData {
   List<List<String>> exportedItemsHistory = [];
   List<List<double>> macrosHistory = [];
 // dashboard info
+  double calories = 0;
   List<double> dailyValuesTotal = List.filled(6, 0.0);
   // % float values
   List<double> dailyValuesIndicator = List.filled(6, 0.0);
@@ -16,12 +17,12 @@ class AppData {
   Map<String, List<String>> foodsMap = {
     // keys are dining hall names
     'John R. Lewis & College Nine': [
-      'Crispy Bacon',
-      'Hard-boiled Cage Free Egg (1)',
-      'Natural Bridges Tofu Scramble',
-      'Organic Gluten-Free Oatmeal',
-      'Shredded Hashbrowns',
-      'Texas French Toast'
+      // 'Crispy Bacon',
+      // 'Hard-boiled Cage Free Egg (1)',
+      // 'Natural Bridges Tofu Scramble',
+      // 'Organic Gluten-Free Oatmeal',
+      // 'Shredded Hashbrowns',
+      // 'Texas French Toast'
     ],
     'Stevenson & Cowell': [
       'Allergen Free Halal Chicken',
@@ -38,18 +39,31 @@ class AppData {
       'food 1',
     ],
   };
+  Map<String, List<List<double>>> dailyValuesMap = {
+    // keys are dining hall names
+    'John R. Lewis & College Nine': [],
+    'Stevenson & Cowell': [],
+    'Crown & Merill': [],
+    'Porter & Kresge': [],
+    'Rachel Carson & Oakes': [],
+  };
 
-  late Map<String, List<List<double>>> macrosMap = {
-    'John R. Lewis & College Nine': List.filled(
-        foodsMap['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
-    'Stevenson & Cowell':
-        List.filled(foodsMap['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
-    'Crown & Merill':
-        List.filled(foodsMap['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
-    'Porter & Kresge':
-        List.filled(foodsMap['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
-    'Rachel Carson & Oakes':
-        List.filled(foodsMap['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+  Map<String, List<List<double>>> macrosMap = {
+    // 'John R. Lewis & College Nine': List.filled(
+    //     foodsMap['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
+    // 'Stevenson & Cowell':
+    //     List.filled(foodsMap['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
+    // 'Crown & Merill':
+    //     List.filled(foodsMap['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
+    // 'Porter & Kresge':
+    //     List.filled(foodsMap['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
+    // 'Rachel Carson & Oakes':
+    //     List.filled(foodsMap['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+    'John R. Lewis & College Nine': [],
+    'Stevenson & Cowell': [],
+    'Crown & Merill': [],
+    'Porter & Kresge': [],
+    'Rachel Carson & Oakes': [],
   };
 }
 
@@ -58,6 +72,11 @@ class AppDataProvider with ChangeNotifier {
 
   AppData get appData => _appData;
 
+  void updateCalories(double newData) {
+    _appData.calories += newData;
+    notifyListeners();
+  }
+
   void updateMacroHistory(List<double> newData) {
     _appData.macrosHistory.add(newData);
     notifyListeners();
@@ -65,7 +84,6 @@ class AppDataProvider with ChangeNotifier {
 
   void updateExportedItemsHistory(List<String> newData) {
     _appData.exportedItemsHistory.add(newData);
-    notifyListeners();
   }
 
   void directUpdateMacroHistory(List<List<double>> newData) {
@@ -108,13 +126,27 @@ class AppDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateMacrosMap(Map<String, List<List<double>>> newData) {
+  void updateMacrosMap(String key, Map<String, List<List<double>>> newData) {
     _appData.macrosMap = newData;
     notifyListeners();
   }
 
-  void updateFoodsMap(Map<String, List<String>> newData) {
+  void updateFoodsMap(String key, String newData) {
+    _appData.foodsMap[key]!.add(newData);
+    notifyListeners();
+  }
+
+  void directUpdateMacrosMap(Map<String, List<List<double>>> newData) {
+    _appData.macrosMap = newData;
+    notifyListeners();
+  }
+
+  void directUpdateFoodsMap(Map<String, List<String>> newData) {
     _appData.foodsMap = newData;
     notifyListeners();
+  }
+
+  void updateDailyValuesMap(String key, List<double> newData) {
+    _appData.dailyValuesMap[key]!.add(newData);
   }
 }
