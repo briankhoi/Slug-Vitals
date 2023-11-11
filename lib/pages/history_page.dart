@@ -20,9 +20,14 @@ class _HistoryPageState extends State<HistoryPage> {
     );
 
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Nexa'),
+      theme: ThemeData(
+          fontFamily: 'Nexa',
+      ),
       home: Scaffold(
-        appBar: AppBar(title: Text("History"),),
+        appBar: AppBar(
+         backgroundColor: Colors.green.shade300,
+         title: Text("History"),
+        ),
         body: SingleChildScrollView(
           child: ExpansionPanelList.radio(
             children: _items.map((e) => ExpansionPanelRadio(
