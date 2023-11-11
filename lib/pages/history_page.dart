@@ -44,8 +44,11 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     List<String> emptyState = [];
+    List<String> navState = ['1'];
+    print(exportedItems);
+    print(exportedItems);
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
-      if (!(listEquals(exportedItems, emptyState))) {
+      if (!(listEquals(exportedItems, emptyState)) && !listEquals(exportedItems, navState)) {
         // appData.updateMacroHistory(macros);
         // appData.updateMacrosTotal(macros);
         // appData.updateMacrosIndicator(macros);
@@ -57,9 +60,9 @@ class _HistoryPageState extends State<HistoryPage> {
           int b = indexTracker[i][1];
           Map<String, List<List<double>>> DV_map =
               appData.appData.dailyValuesMap;
-          print("bruh");
-          print(DV_map);
-          print(DV_map.keys.toList());
+          // print("bruh");
+          // print(DV_map);
+          // print(DV_map.keys.toList());
           List<double> DVs = DV_map[DV_map.keys.toList()[a]]![b];
 
           // log calories
@@ -73,6 +76,7 @@ class _HistoryPageState extends State<HistoryPage> {
           neededDailyValues.add(DVs[3]);
           neededDailyValues.add(DVs[5]);
           appData.updateDailyValuesTotal(neededDailyValues);
+          appData.updateDailyValuesIndicator(appData.appData.dailyValuesTotal);
 
           // log macros
           List<double> macros = [];
@@ -90,7 +94,8 @@ class _HistoryPageState extends State<HistoryPage> {
       // print(listEquals(exportedItems[0], emptyState[0]));
       int histLen = appData.appData.exportedItemsHistory.length;
       // print(histLen);
-      if (listEquals(exportedItems, emptyState)) {
+      if (histLen == 1 && listEquals(exportedItems, emptyState)) {
+        // if (listEquals(exportedItems, emptyState)) {
         return MaterialApp(
             theme: ThemeData(
               fontFamily: 'Nexa',
@@ -104,21 +109,20 @@ class _HistoryPageState extends State<HistoryPage> {
             ));
       }
       List<Map<String, dynamic>> _items = [];
-      if (appData.appData.exportedItemsHistory.isNotEmpty) {
-        _items = List.generate(
-            histLen,
-            (index) => {
-                  'id': index,
-                  'title':
-                      appData.appData.exportedItemsHistory[index].toString(),
-                  'description': 'Carbs: ' +
-                      appData.appData.macrosHistory[index][0].toString() +
-                      ', Protein: ' +
-                      appData.appData.macrosHistory[index][1].toString() +
-                      ', Fats: ' +
-                      appData.appData.macrosHistory[index][2].toString(),
-                });
-      }
+      // if (appData.appData.exportedItemsHistory.isNotEmpty) {
+      _items = List.generate(
+          histLen,
+          (index) => {
+                'id': index,
+                'title': appData.appData.exportedItemsHistory[index].toString(),
+                'description': 'Carbs: ' +
+                    appData.appData.macrosHistory[index][0].toString() +
+                    ', Protein: ' +
+                    appData.appData.macrosHistory[index][1].toString() +
+                    ', Fats: ' +
+                    appData.appData.macrosHistory[index][2].toString(),
+              });
+      // }
       return MaterialApp(
         theme: ThemeData(
           fontFamily: 'Nexa',

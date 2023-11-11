@@ -39,10 +39,11 @@ class _MyAppState extends State<MyApp> {
     return Consumer<AppDataProvider>(builder: (context, appData, child) {
       List<String> keys = nutrientData!.keys.toList();
       // update daily values array
+      String college = 'John R. Lewis & College Nine';
       for (int i = 0; i < keys.length; i++) {
         appData.updateDailyValuesMap(
-            'John R. Lewis & College Nine', nutrientData![keys[i]]!);
-        appData.updateFoodsMap('John R. Lewis & College Nine', keys[i]);
+            college, nutrientData![keys[i]]!);
+        appData.updateFoodsMap(college, keys[i]);
         // appData.notifyListeners();
       }
       return MaterialApp(
@@ -69,7 +70,7 @@ class _MyAppState extends State<MyApp> {
                   // resolve these errors
                   HistoryPage(
                     indexTracker: [],
-                    exportedItems: [],
+                    exportedItems: ['1'],
                     // macros: [],
                   ),
                 ],

@@ -12,17 +12,11 @@ class AppData {
   List<double> dailyValuesIndicator = List.filled(6, 0.0);
   List<double> macrosTotal = List.filled(3, 0.0);
   List<double> macrosIndicator = List.filled(3, 0.0);
-  List<double> thresholds = List.filled(6, 100.0);
+  List<double> thresholds = [30.0, 50.0, 300.0, 1000.0, 100.0, 40.0];
 // food info
   Map<String, List<String>> foodsMap = {
     // keys are dining hall names
     'John R. Lewis & College Nine': [
-      // 'Crispy Bacon',
-      // 'Hard-boiled Cage Free Egg (1)',
-      // 'Natural Bridges Tofu Scramble',
-      // 'Organic Gluten-Free Oatmeal',
-      // 'Shredded Hashbrowns',
-      // 'Texas French Toast'
     ],
     'Stevenson & Cowell': [
       'Allergen Free Halal Chicken',
@@ -74,12 +68,12 @@ class AppDataProvider with ChangeNotifier {
 
   void updateCalories(double newData) {
     _appData.calories += newData;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateMacroHistory(List<double> newData) {
     _appData.macrosHistory.add(newData);
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateExportedItemsHistory(List<String> newData) {
@@ -98,21 +92,21 @@ class AppDataProvider with ChangeNotifier {
     for (int i = 0; i < 6; i++) {
       _appData.dailyValuesTotal[i] += newData[i];
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateDailyValuesIndicator(List<double> newData) {
     for (int i = 0; i < 6; i++) {
       _appData.dailyValuesIndicator[i] = newData[i] / _appData.thresholds[i];
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateMacrosTotal(List<double> newData) {
     for (int i = 0; i < 3; i++) {
       _appData.macrosTotal[i] += newData[i];
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateMacrosIndicator(List<double> newData) {
@@ -123,27 +117,27 @@ class AppDataProvider with ChangeNotifier {
     for (int i = 0; i < 3; i++) {
       _appData.macrosIndicator[i] = _appData.macrosTotal[i] / sum;
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateMacrosMap(String key, Map<String, List<List<double>>> newData) {
     _appData.macrosMap = newData;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateFoodsMap(String key, String newData) {
     _appData.foodsMap[key]!.add(newData);
-    notifyListeners();
+    // notifyListeners();
   }
 
   void directUpdateMacrosMap(Map<String, List<List<double>>> newData) {
     _appData.macrosMap = newData;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void directUpdateFoodsMap(Map<String, List<String>> newData) {
     _appData.foodsMap = newData;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateDailyValuesMap(String key, List<double> newData) {
