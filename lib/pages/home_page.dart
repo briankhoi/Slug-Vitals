@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -6,10 +7,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> nut = ['Fat', 'Sugar', 'Sodium', 'Protein', 'Carbs', 'Fiber'];
-  //
-  List<double> progressValues = [0.5, 0.3, 0.67, 0.9, 1, 0]; // values only change this!!
-  //
+  List<String> nut = ['Fiber', 'Sugar', 'Cholesterol', 'Sodium', 'Sat Fat', 'Trans Fat'];
+  List<double> progressValues = [0.5, 0.3, 0.67, 0.9, 1, 0.3]; // values only change this!!
+  List<double> macro = [0.5, 0.3, 0.2]; // Adjust the values as needed
+  int calories = 1009;
+  List<String> macroTitles = ['Fat', 'Carbs', 'Protein']; // Titles for the sections
+  List<Color> macroColors = [
+    Colors.green.shade600, // Protein
+    Colors.green.shade400, // Fat
+    Colors.green.shade300, // Carbs
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +24,62 @@ class _HomePageState extends State<HomePage> {
       theme: ThemeData(
         fontFamily: 'Nexa',
       ),
-      home: Padding(padding: EdgeInsets.only(left: 15, right: 15), child: Scaffold(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Dashboard',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          backgroundColor: Colors.green.shade300, // Set the background color of the AppBar
+          elevation: 0, // Remove the shadow
+        ),
         body: Stack(
           children: [
-            // Green box at the bottom half with padding
             Positioned(
-              bottom: 0,
+              top: 20, // PI CHART AND 1000 CAL
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: PieChart(
+                        PieChartData(
+                          centerSpaceRadius: 40,
+                          sectionsSpace: 0,
+                          startDegreeOffset: -90,
+                          sections: List.generate(
+                            macro.length,
+                                (index) {
+                              final double value = macro[index];
+                              return PieChartSectionData(
+                                color: macroColors[index],
+                                value: value * 100,
+                                radius: 50,
+                                title: macroTitles[index],
+                                titleStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(calories.toString(), style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
+                      Text('cal', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color(0xFF42434F)),),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0, // GREEN BOX
               left: 0,
               right: 0,
               child: Padding(
@@ -40,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                     children: List.generate(
                       nut.length,
                           (index) => Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0, top: 20.0), // Adjust margins as needed
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0, top: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,17 +124,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Positioned(
-              top: 250, // Adjust the top position as needed
-              left: 30, // Adjust the left position as needed
-              child: Text(
-                'At a Glance',
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-            ),
           ],
         ),
       ),
-      ));
+    );
   }
+}
+
+void main() {
+  runApp(HomePage());
 }
