@@ -26,6 +26,48 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var web_scrape_data;
+  Map<String, List<String>> foodsList = {
+    // keys are dining hall names
+    'John R. Lewis & College Nine': [
+      'Crispy Bacon',
+      'Hard-boiled Cage Free Egg (1)',
+      'Natural Bridges Tofu Scramble',
+      'Organic Gluten-Free Oatmeal',
+      'Shredded Hashbrowns',
+      'Texas French Toast'
+    ],
+    'Stevenson & Cowell': [
+      'Allergen Free Halal Chicken',
+      'Apple Pie',
+      'food 1',
+    ],
+    'Crown & Merill': [
+      'food1',
+    ],
+    'Porter & Kresge': [
+      'food 1',
+    ],
+    'Rachel Carson & Oakes': [
+      'food 1',
+    ],
+  };
+
+  late Map<String, List<List<double>>> macrosList = {
+    'John R. Lewis & College Nine': List.filled(
+        foodsList['John R. Lewis & College Nine']!.length, [1.0, 1.0, 1.0]),
+    'Stevenson & Cowell':
+        List.filled(foodsList['Stevenson & Cowell']!.length, [1.0, 1.0, 1.0]),
+    'Crown & Merill':
+        List.filled(foodsList['Crown & Merill']!.length, [1.0, 1.0, 1.0]),
+    'Porter & Kresge':
+        List.filled(foodsList['Porter & Kresge']!.length, [1.0, 1.0, 1.0]),
+    'Rachel Carson & Oakes': List.filled(
+        foodsList['Rachel Carson & Oakes']!.length, [1.0, 1.0, 1.0]),
+  };
+
+  List<double> daily_values = [];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,10 +83,13 @@ class _MyAppState extends State<MyApp> {
             body: TabBarView(
               children: [
                 HomePage(),
-                AddPage(),
-                HistoryPage(),
+                AddPage(macros: macrosList, foodsList: foodsList,),
+                // MenuPage(),
+                // resolve these errors
+                HistoryPage(exportedItems: [], macros: [],),
               ],
-            )),
+            )
+          ),
       ),
     );
   }
@@ -52,17 +97,17 @@ class _MyAppState extends State<MyApp> {
 
 Widget menu() {
   return Container(
-    color: Color(0xFF3F5AA6),
+    color: Colors.green.shade300,
     child: TabBar(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
       indicatorSize: TabBarIndicatorSize.tab,
       indicatorPadding: EdgeInsets.all(5.0),
-      indicatorColor: Colors.blue,
+      indicatorColor: Colors.green.shade500,
       tabs: [
         Tab(
-          text: "Home",
-          icon: Icon(Icons.directions_car),
+          text: "Dashboard",
+          icon: Icon(Icons.home),
         ),
         Tab(
           text: "Add",

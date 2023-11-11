@@ -17,6 +17,9 @@ dependencies:
   http: ^1.1.0
   beautiful_soup_dart: ^0.3.0
   html: ^0.15.4
+  shared_preferences: ^2.2.2
+  fl_chart: ^0.40.0
+
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +29,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Nexa
+      fonts:
+        - asset: fonts/Nexa W01 Regular.ttf
+        - asset: fonts/NexaBold.ttf
+
