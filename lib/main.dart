@@ -3,9 +3,18 @@ import 'pages/add_page.dart';
 import 'pages/history_page.dart';
 import 'pages/home_page.dart';
 import 'pages/menu_page.dart';
-import 'fetch_data.dart';
+import 'pages/fetch_data.dart';
 
-void main() {
+// Variable to store the nutrient data globally
+Map<String, num>? nutrientData;
+
+void main() async {
+  final nutrientData = await readData();
+  if (nutrientData != null) {
+    print(nutrientData);
+  } else {
+    print('Failed to fetch nutrient data.');
+  }
   runApp(const MyApp());
 }
 
